@@ -25,6 +25,7 @@ def get_dirs(glob_pattern):
     """
     if MPI.COMM_WORLD.rank == 0:
         dirs = glob.glob(os.path.expanduser(glob_pattern))
+        dirs = [dx for dx in dirs if os.path.isdir(dx)]
     else:
         dirs = []
     dirs2 = MPI.COMM_WORLD.bcast(dirs, 0)
