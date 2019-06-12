@@ -15,9 +15,9 @@ def get_args():
         description='Simple task farmer that launches an executable in a set of directories.')
 
     parser.add_argument("glob", help="Glob to use to discover directories.")
-    parser.add_argument("exec", nargs='+', help="Executable and parameters.")
+    parser.add_argument("exec_cmd", nargs='+', help="Executable and parameters.")
     a = parser.parse_args()
-    return a.glob, a.exec
+    return a.glob, a.exec_cmd
 
 def get_dirs(glob_pattern):
     """
