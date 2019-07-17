@@ -25,7 +25,7 @@ def get_dirs(glob_pattern):
     dirs = glob.glob(os.path.expanduser(glob_pattern))
     dirs = [dx for dx in dirs if os.path.isdir(dx)]
     
-return dirs
+    return dirs
 
 def execute(exec_cmd, sleep=1):
     """
@@ -33,18 +33,11 @@ def execute(exec_cmd, sleep=1):
 
     Optional 'sleep' argument to allow delay between jobs
     """
-    # cd into the dir
-    os.chdir(dirx)
-
     # execute the command
-    execute(cmd)
-
     with open('stdout', 'w') as stdout:
         with open('stderr', 'w') as stderr:
             p = subprocess.Popen(exec_cmd, stdout=stdout, stderr=stderr)
 
-    # return to the root
-    os.chdir(root_dir)
 
     # default sleep
     time.sleep( sleep )
@@ -80,7 +73,7 @@ if __name__ == '__main__':
     # get number of processes per task
     task_procs = sys.argv[2]
 
-    max_jobs = int( total_procs/task_procs )
+    max_jobs = int( int(total_procs) / int(task_procs) )
 
     # get glob pattern
     glob_pattern = sys.argv[3]
@@ -96,6 +89,8 @@ if __name__ == '__main__':
     # store the cwd to be able to return to it.
     root_dir = os.path.abspath(os.getcwd())
 
+    print(root_dir)
+
     running = []
     finished = []    
 
@@ -107,13 +102,24 @@ if __name__ == '__main__':
 
             dirx = dirs.pop(0)
 
+            # cd into the dir
+            os.chdir(dirx)
+
+            print(os.path.abspath(os.getcwd()))
+            print(cmd)
             # launch job
-            running.append( launch(dirx) )
+            running.append( execute(cmd) )
+
+            # return to the root
+            os.chdir(root_dir)
+
+            print(os.path.abspath(os.getcwd()))
 
         else:
 
             poll(running, finished)
             
-
+    while len(running) > 0:
+        poll(running, finished)
 
 
