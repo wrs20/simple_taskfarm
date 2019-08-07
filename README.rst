@@ -24,8 +24,7 @@ and we want to launch a process in each directory that executes ``ls -l`` using 
     mpirun -n 4 python simple_batch.py 'abc*' ls -l
 
 Note that the glob_pattern needs to be in quotes to stop shell expansion.  
-If you wish to run a script then the executable include the shell, and absolute path:
-
+If you wish to run a script then the executable include the shell, and absolute path
 ::
     bash /absolute/path/to/my_script.sh arg1 arg2 etc
 
@@ -46,6 +45,6 @@ Again if we have directories:
 
 and we want to launch a two process task in each directory that executes ``echo 'Hello World!'`` using a total of 2 concurrent parallel tasks we launch:
 ::
-    python task_batch.py 2 'abc*' mprun -n 2 echo 'Hellow World!'
+    python task_batch.py 2 'abc*' mprun -n 2 echo 'Hello World!'
 
 The conditions for the glob_pattern and executable are the same as for simple batch above.
