@@ -34,7 +34,7 @@ Task Batch
 
 Tool to launch parallel processes in all directories that match a glob.  Execute with
 ::
-    python task_batch.py <NUM_PROCS> <PROCS_PER_TASK> <glob_pattern> <executable>
+    python task_batch.py <NUM_CONCURENT_PARALLEL_PROCS> <glob_pattern> <executable>
 
 Again if we have directories:
 ::
@@ -44,8 +44,8 @@ Again if we have directories:
     abc3
     abc4
 
-and we want to launch a two process task in each directory that executes ``echo 'Hello World!'`` using a total of 4 processes we launch:
+and we want to launch a two process task in each directory that executes ``echo 'Hello World!'`` using a total of 2 concurrent parallel tasks we launch:
 ::
-    python task_batch.py 4 2 'abc*' mprun -n 2 echo 'Hellow World!'
+    python task_batch.py 2 'abc*' mprun -n 2 echo 'Hellow World!'
 
 The conditions for the glob_pattern and executable are the same as for simple batch above.

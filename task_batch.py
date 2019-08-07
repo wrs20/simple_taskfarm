@@ -55,10 +55,10 @@ def poll(running, finished, sleep=10):
 
     completed = 0
 
-    for id, process in enumerate(running):
+    for idx, process in enumerate(running):
         poll = process.poll()
         if poll != None:
-            finished.append( running.pop(id) )
+            finished.append( running.pop(idx) )
             completed += poll
 
     if completed == 0:
@@ -67,19 +67,14 @@ def poll(running, finished, sleep=10):
 
 if __name__ == '__main__':
     
-    # get total number of processes
-    total_procs = sys.argv[1]
-    
-    # get number of processes per task
-    task_procs = sys.argv[2]
-
-    max_jobs = int( int(total_procs) / int(task_procs) )
+    # get total number of concurrent parallel tasks
+    max_jobs = sys.argv[1]
 
     # get glob pattern
-    glob_pattern = sys.argv[3]
+    glob_pattern = sys.argv[2]
 
     # get the command
-    cmd = sys.argv[4:]
+    cmd = sys.argv[3:]
     
     # get all the directories
     dirs = get_dirs(glob_pattern)
