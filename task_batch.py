@@ -68,7 +68,7 @@ def poll(running, finished, sleep=10):
 if __name__ == '__main__':
     
     # get total number of concurrent parallel tasks
-    max_jobs = sys.argv[1]
+    max_jobs = int(sys.argv[1])
 
     # get glob pattern
     glob_pattern = sys.argv[2]
