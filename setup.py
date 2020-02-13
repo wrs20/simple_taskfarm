@@ -9,7 +9,7 @@ long_description = """"""
 #             install_requires.append(l)
 # 
 setup(
-   name='simple_task_farmer',
+   name='simple_taskfarm',
    version='1.0',
    description='',
    license="GPL3",
@@ -19,6 +19,6 @@ setup(
    url="https://github.com/wrs20/simple_taskfarm",
    packages=find_packages(),
    #install_requires=install_requires,
-   scripts=['task-batch'],
+   scripts=['scripts/task-batch'],
    include_package_data=True
 )
