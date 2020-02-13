@@ -17,7 +17,7 @@ Tool to launch processes in parallel with one process per directory in all direc
 ::
     task-batch --glob <glob_pattern> <NUM_CONCURENT_PARALLEL_PROCS> <executable>
 
-Again if we have directories:
+If we have directories:
 ::
     
     abc1
