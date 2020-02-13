@@ -40,8 +40,12 @@ Further configurable options, such as starting delay and polling delay, are list
 
 Simple Batch
 ------------
+Requires MPI for Python which can be installed with:
+::
+    pip install mpi4py
 
-Tool to launch a serial process in all directories that match a glob. Execute with
+
+Tool to launch a serial process in all directories that match a glob using MPI to leverage multiple nodes. Execute with
 ::
 
     mpirun -n <NUM_PROCS> python simple_batch.py <glob_pattern> <executable>
