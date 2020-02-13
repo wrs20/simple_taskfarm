@@ -29,7 +29,7 @@ and we want to launch a two process task in each directory that executes ``echo 
 ::
     task-batch --glob 'abc*' 2 echo 'Hello World!'
 
-The conditions for the glob_pattern and executable are the same as for simple batch above. The default glob is `'*'`, hence we could run a command in all subdirectories of a directory with:
+The default glob is ``'*'`` (note the single quotes to avoid expansion in the shell), hence we could run a command in all subdirectories of a directory with:
 ::
     task-batch <NUM_CONCURENT_PARALLEL_PROCS> <executable>
 
