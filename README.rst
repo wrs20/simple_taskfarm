@@ -60,7 +60,13 @@ and we want to launch a process in each directory that executes ``ls -l`` using 
     mpirun -n 4 python simple_batch.py 'abc*' ls -l
 
 Note that the glob_pattern needs to be in quotes to stop shell expansion.  
-If you wish to run a script then the executable command must include the shell and absolute path
+
+
+Notes on running scripts
+------------------------
+
+If you wish to run a script then the executable command should include the interpreter and the absolute path to the script
 ::
     bash /absolute/path/to/my_script.sh arg1 arg2 etc
 
+This requirement arises as the executable command is launched as a subprocess call.
