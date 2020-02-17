@@ -15,6 +15,7 @@ def get_args():
 
     parser.add_argument("n", type=int, help="Number of concurrent processes")
     parser.add_argument("--glob", type=str, default="*", help="Glob to use to discover directories, default '*'.")
+    parser.add_argument("--prefix", type=str, default="", help="Prefix for stdout and stderr, default ''.")
     parser.add_argument(
         "--pause-time",
         type=float,
@@ -44,15 +45,15 @@ def get_dirs(glob_pattern):
     return dirs
 
 
-def execute(exec_cmd, sleep=1):
+def execute(exec_cmd, sleep=1, prefix=""):
     """
     Execute the passed command in the current working directory.
 
     Optional 'sleep' argument to allow delay between jobs
     """
     # execute the command
-    with open("stdout", "w") as stdout:
-        with open("stderr", "w") as stderr:
+    with open(prefix + "stdout", "w") as stdout:
+        with open(prefix + "stderr", "w") as stderr:
             p = subprocess.Popen(exec_cmd, stdout=stdout, stderr=stderr)
 
     # default sleep
@@ -118,7 +119,7 @@ def main():
                 print(os.path.abspath(os.getcwd()))
 
             # launch job
-            running.append(execute(args.cmd, args.pause_time))
+            running.append(execute(args.cmd, args.pause_time, args.prefix))
 
             # return to the root
             os.chdir(root_dir)
