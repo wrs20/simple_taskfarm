@@ -28,6 +28,12 @@ def get_args():
         default="10.0",
         help="Time to sleep for between polling running jobs to check for completion, default 10.0s.",
     )
+    parser.add_argument(
+        "--success-returncode",
+        type=int,
+        default=0,
+        help="Return code value to expect for successful execution of process, default 0.",
+    )
     parser.add_argument("--quiet", action="store_true", help="Suppress printing to stdout.")
     parser.add_argument("cmd", nargs=argparse.REMAINDER, help="Executable and parameters.")
     a = parser.parse_args()
@@ -62,7 +68,7 @@ def execute(exec_cmd, sleep=1, prefix=""):
     return p
 
 
-def poll(running, finished, sleep=10):
+def poll(running, finished, sleep=10, success_returncode=0):
     """
     Poll currently 'running' subprocesses to check completion
 
@@ -74,8 +80,10 @@ def poll(running, finished, sleep=10):
     completed = 0
 
     for idx, process in enumerate(running):
-        p = process.poll()
+        p = process[1].poll()
         if p != None:
+            if process[1].returncode != success_returncode:
+                print("Warning: {} return code was {}.".format(process[0], process[1].returncode))
             finished.append(running.pop(idx))
             completed += p
 
@@ -116,20 +124,21 @@ def main():
             os.chdir(dirx)
 
             if not args.quiet:
-                print(os.path.abspath(os.getcwd()))
+                abs_dirx = os.path.abspath(os.getcwd())
+                print(abs_dirx)
 
             # launch job
-            running.append(execute(args.cmd, args.pause_time, args.prefix))
+            running.append((abs_dirx, execute(args.cmd, args.pause_time, args.prefix)))
 
             # return to the root
             os.chdir(root_dir)
 
         else:
 
-            poll(running, finished, args.poll_time)
+            poll(running, finished, args.poll_time, args.success_returncode)
 
     while len(running) > 0:
-        poll(running, finished, args.poll_time)
+        poll(running, finished, args.poll_time, args.success_returncode)
 
 
 if __name__ == "__main__":
