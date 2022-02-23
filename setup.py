@@ -18,7 +18,7 @@ setup(
    author_email='W.R.Saunders@bath.ac.uk',
    url="https://github.com/wrs20/simple_taskfarm",
    packages=find_packages(),
-   #install_requires=install_requires,
+   install_requires=install_requires,
    scripts=['scripts/task-batch'],
    include_package_data=True
 )
