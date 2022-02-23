@@ -5,6 +5,7 @@ import argparse
 import os
 import subprocess
 import time
+from tqdm import tqdm
 
 
 def get_args():
@@ -35,6 +36,7 @@ def get_args():
         help="Return code value to expect for successful execution of process, default 0.",
     )
     parser.add_argument("--quiet", action="store_true", help="Suppress printing to stdout.")
+    parser.add_argument("--bar", action="store_true", help="Enable progress bar mode.")
     parser.add_argument("cmd", nargs=argparse.REMAINDER, help="Executable and parameters.")
     a = parser.parse_args()
     return a
@@ -85,10 +87,12 @@ def poll(running, finished, sleep=10, success_returncode=0):
             if process[1].returncode != success_returncode:
                 print("Warning: {} return code was {}.".format(process[0], process[1].returncode))
             finished.append(running.pop(idx))
-            completed += p
+            completed += 1
 
     if completed == 0:
         time.sleep(sleep)
+
+    return completed
 
 
 def main():
@@ -113,6 +117,9 @@ def main():
     running = []
     finished = []
 
+    if args.bar:
+        pbar = tqdm(total=len(dirs))
+
     # for each dir
     while len(dirs) > 0:
 
@@ -123,8 +130,8 @@ def main():
             # cd into the dir
             os.chdir(dirx)
 
-            if not args.quiet:
-                abs_dirx = os.path.abspath(os.getcwd())
+            abs_dirx = os.path.abspath(os.getcwd())
+            if not (args.quiet or args.bar):
                 print(abs_dirx)
 
             # launch job
@@ -135,10 +142,17 @@ def main():
 
         else:
 
-            poll(running, finished, args.poll_time, args.success_returncode)
+            completed = poll(running, finished, args.poll_time, args.success_returncode)
+            if args.bar:
+                pbar.update(completed)
 
     while len(running) > 0:
-        poll(running, finished, args.poll_time, args.success_returncode)
+        completed = poll(running, finished, args.poll_time, args.success_returncode)
+        if args.bar:
+            pbar.update(completed)
+
+    if args.bar:
+        pbar.close()
 
 
 if __name__ == "__main__":

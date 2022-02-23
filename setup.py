@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 long_description = """"""
 
-# install_requires = []
-# with open('requirements.txt') as fh:
-#     for l in fh:
-#         if len(l) > 0:
-#             install_requires.append(l)
-# 
+install_requires = []
+with open('requirements.txt') as fh:
+    for l in fh:
+        if len(l) > 0:
+            install_requires.append(l)
+
 setup(
    name='simple_taskfarm',
    version='1.0',
